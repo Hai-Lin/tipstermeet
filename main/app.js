@@ -7,19 +7,19 @@ var tips = new TipsClient({
 });
 
 var foreach = function(obj, func) {
-	for(var i = 2; i < obj.length; i++) { 
+	for(var i = 0; i < obj.length; i++) { 
 		func(obj[i], i); // execute a function and make the obj, objIndex available
 	}
 }
 
 
-tips.user.tips('Ashwath', function(error, tips){
+tips.user.tips('Ashwath', function(error, ret){
 	if(error) {
 		console.log(error);
 	}
 	else {
-		foreach(tips, function(tip){
-			product.tipsters(tip.id, console.log);
+		foreach(ret.tips, function(tip){
+			product.tipsters(tip.head, console.log);
 		});
 	}
 
