@@ -1,0 +1,29 @@
+doctype 5
+- var product = tips[1];
+- var user = tips[0];
+html
+	head
+		title= title
+		link(rel='stylesheet', href='//d3t3tfuk4dded6.cloudfront.net/web/developer/bootstrap/css/bootstrap.min.css')
+		link(rel='stylesheet', href='//d3t3tfuk4dded6.cloudfront.net/web/developer/bootstrap/css/bootstrap-responsive.min.css')
+	body
+		div(class='well')
+			button(class='btn btn-danger') ashwhat
+			p Welcome to #{title}
+			img(src=product[0].image )
+			- var tippers = user[product[0].head]
+			//--p #{JSON.stringify(tippers)}
+
+			-for(var i = 0;i<tippers.length; i++)
+				img(src=tippers[i].image )
+				
+			p #{JSON.stringify(user)}
+
+
+
+
+
+
+
+script(src='//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')        
+script(src='//d3t3tfuk4dded6.cloudfront.net/web/developer/bootstrap/js/bootstrap.min.js')
