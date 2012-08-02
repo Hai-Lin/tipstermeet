@@ -1,4 +1,5 @@
 function start(callback){
+
 	var TipsClient = require('../');
 	var product = require('../lib/product');
 	var tips = new TipsClient({
@@ -63,5 +64,20 @@ function start(callback){
 	});
 
 }
+
+function follow(){
+	var TipsClient = require('../');
+	var product = require('../lib/product');
+	var tips = new TipsClient({
+  		//key: '932a4e6f898648eca95ee2920fb99c2f',
+  		//secret: '9dd49dc4c9ac4657a0a65605f2c27657',
+  		key:'8ba43918d5b04a71aef489de9e2a88b0',
+  		secret:'72400e24cca646e6bb56432e16a4ce62',
+  		debug: true
+	});
+
+	tips.user.follow(acces_token,'hai', console.log);
+}
+exports.follow = follow;
 
 exports.start= start;
