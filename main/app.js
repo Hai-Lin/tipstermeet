@@ -16,9 +16,7 @@ function start(callback){
 		}
 	}
 
-	var user_id = '4f7723ddf5d16f4f20000295';
-
-	tips.user.followers(user_id, function(error, ret){
+	tips.user.followers('Ashwath', function(error, ret){
 		if(error){
 			console.log(error);
 		}
@@ -33,7 +31,7 @@ function start(callback){
 				hash[actor.head] = actor;
 			});
 		
-			tips.user.tips(user_id, function(error, ret1){
+			tips.user.tips('Ashwath', function(error, ret1){
 				if(error) {
 					console.log(error);
 				}
@@ -65,7 +63,7 @@ function start(callback){
 
 }
 
-function follow(){
+function follow(access_token, user_id, callback){
 	var TipsClient = require('../');
 	var product = require('../lib/product');
 	var tips = new TipsClient({
@@ -76,8 +74,9 @@ function follow(){
   		debug: true
 	});
 
-	tips.user.follow(acces_token,'hai', console.log);
+	tips.user.follow(access_token, user_id, callback);
 }
+
 exports.follow = follow;
 
 exports.start= start;
