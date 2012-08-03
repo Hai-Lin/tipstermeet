@@ -36,7 +36,7 @@ var tos_request_token_url = "https://tips.by/oauth/request_token?oauth_callback=
     tos_api_secret = '72400e24cca646e6bb56432e16a4ce62',
     tos_oauth = new OAuth(tos_request_token_url, tos_access_token_url, tos_api_key, tos_api_secret, "1.0", null, "HMAC-SHA1")
     ;
-var session = { "me": {"rt": "", "rts": "", "at": "", "ats": "", "tos_user_id":"", "tos_user_name":""} };    
+var session = { "me": {"rt": "", "rts": "", "at": "", "ats": "", "tos_user_id": "", "tos_user_name": ""} };    
 
 // HANDLERS
 app.get(/^\/try_authorize/, function(request, response, next){
@@ -50,15 +50,30 @@ app.get(/^\/try_authorize/, function(request, response, next){
           session.me.tos_user_id = additional_data.user_id;
           session.me.tos_user_name = additional_data.user_name;
           session.me.at = access_token;
-          console.log("access_token",access_token);
           session.me.ats = access_token_secret;
-          response.writeHead(302, {"location": "http://localhost:3000/follow"});
+          response.writeHead(302, {"location": "http://localhost:3000/gameon"});
           response.end();
         });
   });
 
+//get access token then redirects to /gameon
 app.get('/', function(request, response){
-  response.send("Suggested Follow");
+  if (!session.me.at) {
+        tos_oauth.getOAuthRequestToken(function(error, request_token, request_secret) {
+          if (error) {
+                return next(error);
+          };
+
+          session.me.rt = request_token;
+          session.me.rts = request_secret;
+          response.statusCode = 302;
+          response.setHeader("location", "https://tips.by/oauth/authorize?oauth_token=" + request_token);
+          return response.end();
+        });
+    }
+  else{
+    response.redirect("http://localhost:3000/gameon", 302);
+  }
 });
 
 
@@ -89,10 +104,24 @@ app.get('/follow', function(request, response, next){
 
 // starts game
 app.get('/gameon', function(request, response, next){
-  var main = require('./main/app');
-  main.start(function(result){
-    response.render('index',{ title: 'Express', tips: result });
-  });
+   if (!session.me.at) {
+        tos_oauth.getOAuthRequestToken(function(error, request_token, request_secret) {
+          if (error) {
+                return next(error);
+          }
+          session.me.rt = request_token;
+          session.me.rts = request_secret;
+          response.statusCode = 302;
+          response.setHeader("location", "https://tips.by/oauth/authorize?oauth_token=" + request_token);
+          return response.end();
+        });
+    }
+    else {
+        var main = require('./main/app');
+        main.start(session.me.tos_user_id, function(result){
+           response.render('index',{ title: 'Express', tips: result });
+         });
+    }
 });
 
 
