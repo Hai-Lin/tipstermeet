@@ -10,6 +10,8 @@ script
 	var current_user_ids = [];
 	var current_user_indexs = [];
 	var notStart = true;
+script(src='//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')        
+script(src='//d3t3tfuk4dded6.cloudfront.net/web/developer/bootstrap/js/bootstrap.min.js')
 style
 	.centered-text {text-align:center}
 	.arrow-left {font-size:50px; float:left; margin-top:100px; text-decoration:none;}
@@ -101,11 +103,10 @@ html
 								div(class='user-name')
 									h4 #{tippers[j].name} 
 								div(class='user-follow')
-									a( class='btn btn-success',href='/follow/#{tippers[j].head}') Follow
+									a( class='btn btn-success', onclick='$.ajax({url:"/follow/#{tippers[j].head}", success: function(){alert("followed");}});') Follow
+									//-a( class='btn btn-success', onclick='$(this).html("followed");') Follow
 						
 	
-script(src='//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')        
-script(src='//d3t3tfuk4dded6.cloudfront.net/web/developer/bootstrap/js/bootstrap.min.js')
 script
 	function goRight(){
 		if(current_page == 0)
