@@ -15,7 +15,8 @@ function start(callback){
 		}
 	}
 
-	var user_id = '4f7723ddf5d16f4f20000295';
+	//var user_id = '4f7723ddf5d16f4f20000295';
+	var user_id = '4f84a219b04953bc34000220';
 
 	tips.user.followers(user_id, function(error, ret){
 		if(error){

@@ -1,29 +1,236 @@
 doctype 5
 - var product = tips[1];
 - var user = tips[0];
+script 
+	var current_page = 0;
+	var product_index = [];
+	var length = #{product.length};
+	var user_length = [];
+	var user_id = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],];
+	var current_user_ids = [];
+	var current_user_indexs = [];
+	var notStart = true;
+style
+	.centered-text {text-align:center}
+	.arrow-left {font-size:50px; float:left; margin-top:100px; text-decoration:none;}
+	.arrow-right {font-size:50px; float:right;margin-top:82px; text-decoration:none;}
+	.arrow-right-user {font-size:50px; float:right;margin-top:100px; text-decoration:none;}
+	.product-div {margin-top:60px;position:relative; overflow:hidden; height:150px;  }
+	.product-div img, .product-div div {position:absolute;}
+	.product-cover {background:black; width:100%; height:100%; opacity:0.4;}
+	.product-name {opacity:0.8;background:black; color:#333333;width:100%; height:30%; padding:2px 0 0 5px;bottom:0px;}
+	.product-name p {color:white}
+	.product-sway {opacity:0.8;background:black; color:#333333;width:10%; height:10%; padding:2px 0 0 2px;}
+	.product-sway h4 {color:white}
+	.on{}
+	.on div[class='product-name'], .on div[class='product-sway'], .on div[class='user-name'], .on div[class='user-follow'] {display:block;}
+	.on div[class='product-cover'], .on div[class='user-cover'] {display:none;}
+	.off{}
+	.off div[class='product-name'], .off div[class='product-sway'], .off div[class='user-name'], .off div[class='user-follow'] {display:none;}
+	.off div[class='product-cover'], .off div[class='product-cover']{display:block;}
+	.user-div {margin-top:60px; position:relative; overflow:hidden; height:150px;  }
+	.user-div img, .user-div div {position:absolute;}
+	.user-cover {background:black; width:100%; height:100%; opacity:0.4;}
+	.user-follow {opacity:0.8;background:black; color:#333333;width:100%; height:20%; padding:5px 0 0 5px;bottom:0px;}
+	.user-follow h4 {color:white}
+	.user-name {opacity:0.8;background:black; color:#333333;width:100%; height:10%; text-align:center;padding:2px 0 0 2px; top:0px}
+	.user-name h4 {color:white}
+	.product-text {font-size:20px; color:green; width:250px;}
+	.user-text {margin-bottom:30px;font-size:30px; color:black; }
+	.follow-div {margin:45px 20px 0 0; color:black; float:right;}
+	.main-div{background-color:white; min-height:1000px;}
+	.margin-left {margin-left:100px}
+	.margin-right {margin-right:100px}
+	.arrow-left {font-size:50px;margin-top:230px;float:left; margin-left:50px;}
+	.arrow-right {font-size:50px;margin-top:230px;float:right; margin-right:50px}
 html
 	head
 		title= title
 		link(rel='stylesheet', href='//d3t3tfuk4dded6.cloudfront.net/web/developer/bootstrap/css/bootstrap.min.css')
 		link(rel='stylesheet', href='//d3t3tfuk4dded6.cloudfront.net/web/developer/bootstrap/css/bootstrap-responsive.min.css')
-	body
-		div(class='well')
-			button(class='btn btn-danger') ashwhat
-			p Welcome to #{title}
-			img(src=product[0].image )
-			- var tippers = user[product[0].head]
-			//--p #{JSON.stringify(tippers)}
-
-			-for(var i = 0;i<tippers.length; i++)
-				img(src=tippers[i].image )
-				
-			p #{JSON.stringify(user)}
-
-
-
-
-
-
-
+	body(style='background-color:#dddedf')
+		div(class='navbar navbar-fixed-top')
+			div(class='navbar-inner')
+				div(class='container')
+					a(class='brand', href = '#') Tip Or Skip
+		div(class='container main-div')
+			//-div(class='row')
+				//-div(class='span6 offset3')
+					//-div(id='myCarousel', class='carousel slide')
+						//-div(class='carousel-inner')
+							//-div(class='active item',style='height:500px')
+								//-img(src=product[0].image, width='100%', height='100%')
+								//-div(class='carousel-catpion')
+									//-H4 #{product[0].name}
+							//--for(var i =1; i<product.length; i++)
+								//-div(class='item', style='height:500px')
+									//-img(src=product[i].image, width='100%',height='100%')
+									//-div(class='carousel-caption')
+										//-H4 #{product[i].name}
+							//-a(class="left carousel-control", href="#myCarousel", data-slide="prev") &lsaquo;
+							//-a(class="right carousel-control", href="#myCarousel", data-slide="next") &rsaquo;
+		
+			H1(style='margin-top:150px; text-align:center;') Click on the tips to see who to follow
+			div(class='container span3 offset9', style='margin-top:50px;')
+				button(onclick='cleanAll()', class='btn btn-danger') Clear All
+			div(class='container')	
+				a(class="arrow-left ", onclick='goLeft()', id='left', href='#left' ) &lsaquo;
+				a(class="arrow-right ", onclick='goRight()', href = '#left') &rsaquo;
+				div(class='row-fluid')
+					div(id='product_length', class='span1')
+					-for(var i =0; i<product.length; i++)
+						div(id='product_#{i}',class='container centered-text product-div span2 off'  )
+							img(src=product[i].thumbnail, width='100%')
+							div(class='product-cover')
+							div(class='product-name')
+								p #{product[i].name} 
+							div(class='product-sway')
+								h4 #{product[i].sway} 
+			div(class='container span11', style=' margin-top: 30px;border-bottom:5px solid black;')
+			
+			div(class='container span12')	
+				div(class='row-fluid span12')
+					-for(var i =0; i<product.length;i++)
+						- var tippers = user[product[i].head] || []
+						script user_length.push(#{tippers.length});
+						-for(var j=0; j<tippers.length; j++)
+							script user_id['#{i}'].push('#{tippers[j].head}');
+							div(id='user_#{i}_#{j}', class='container centered-text user-div span2 off', style='display:none' )
+								img(src=tippers[j].thumbnail, width='100%')
+								div(class='user-cover')
+								div(class='user-name')
+									h4 #{tippers[j].name} 
+								div(class='user-follow')
+									button(class='btn btn-success') Follow
+						
+	
 script(src='//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')        
 script(src='//d3t3tfuk4dded6.cloudfront.net/web/developer/bootstrap/js/bootstrap.min.js')
+script
+	function goRight(){
+		if(current_page == 0)
+		{	
+			cleanAll();
+			current_page = 1;
+			for(var i =0; i<10; ++i)
+			{
+				$('#product_'+i).hide();
+			}
+			for(var i = 10; i<length; ++i)
+			{
+				$('#product_'+i).show('slow');
+			}
+		}
+	}
+	function goLeft(){
+		if(current_page == 1)
+		{	
+			cleanAll();
+			current_page = 0;
+			for(var i =10; i<length; ++i)
+			{
+				$('#product_'+i).hide();
+			}
+			for(var i = 0; i<10; ++i)
+			{
+				$('#product_'+i).show('slow');
+			}
+		}
+	}
+				
+
+
+	function cleanAll(){
+		current_user_ids = [];
+		current_user_indexs = [];
+		notStart = true;
+		for (var i =0; i<length; i++)
+		{
+			var $product = $('#product_'+i);
+			product_index[i] = 0;
+			$product.attr('class','container centered-text product-div span2 off');
+		}
+		showUser();
+	}
+	function joinArray(arr1, arr2){
+		var result = []
+		var index = []
+		if (notStart) 
+		{
+			notStart = false;
+			result = arr2;
+			for(var j =0; j<arr2.length; j++)
+			{
+				index.push(j);
+			}
+		}
+		else 
+		{
+			for(var i =0; i<arr1.length; i++)
+				for(var j =0; j<arr2.length; j++)
+				{
+					if(arr1[i] === arr2[j])
+					{	
+						result.push(arr1[i]);
+						index.push(j);
+					}
+				}
+		}
+				return [result,index];
+	}
+	function updateUser(index){
+	var result = joinArray(current_user_ids, user_id[index]);
+	var current_index = [];
+	current_user_ids = result[0];
+	for(var i = 0; i< result[1].length; ++i)
+		{current_index.push([index,result[1][i]]); }
+		current_user_indexs = current_index;
+	showUser();
+	}
+	function showUser(){
+	for(var i =0; i<length; i++)
+		for(var j =0; j<user_length[i]; j++)
+		{	$('#user_'+i+'_'+j).hide();}
+	for( var i =0; i<current_user_indexs.length; ++i)
+	{	$('#user_'+current_user_indexs[i][0]+'_'+current_user_indexs[i][1]).show('slow'); }
+	}
+
+	function init(){
+	for(var i =0; i<length; i++)
+		product_index.push(0);
+	for(var i = 0; i<length; i++)
+	{
+		var $product = $('#product_'+i);
+	$product.mouseover(function(){
+			var ii = $(this).attr('id').split('_')[1];
+		if(product_index[ii] ==0){$(this).attr('class','container centered-text product-div span2 on');}});
+	$product.mouseout(function(){
+			var ii = $(this).attr('id').split('_')[1];
+		if(product_index[ii] == 0){$(this).attr('class','container centered-text product-div span2 off');}});
+	
+	$product.click(function(){
+			var ii = $(this).attr('id').split('_')[1];
+		product_index[ii] =1;
+		$(this).attr('class','container centered-text product-div span2 on');
+			updateUser(ii);
+		});
+		for( var j=0; j<user_length[i]; j++)
+			{
+				var $user = $('#user_'+i+'_'+j);
+				$user.mouseover(function(){
+					$(this).attr('class','container centered-text user-div span2 on');});
+				$user.mouseout(function(){
+					$(this).attr('class','container centered-text user-div span2 off');});
+					}
+		}
+	for(var i = 10; i<length; i++)
+	{
+		$('#product_'+i).hide();
+	}
+		
+		
+	}
+	init();
+	
+
+
