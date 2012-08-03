@@ -39,7 +39,6 @@ function start(user_id, callback){
 					foreach(ret_500.followers, function(actor_500){
 						hash[actor_500.head] = actor_500;
 					});
-
 					// adding user to hash
 					hash[user_id] = user_id;				
 				}
