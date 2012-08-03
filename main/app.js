@@ -27,6 +27,10 @@ function start(callback){
 				product_list = {}
 			;
 
+			tips.user.info('Ashwath', function(error, ret){
+				hash[ret.head] = ret;
+			});
+
 			foreach(ret.followers, function(actor){
 				hash[actor.head] = actor;
 			});
