@@ -101,7 +101,7 @@ html
 								div(class='user-name')
 									h4 #{tippers[j].name} 
 								div(class='user-follow')
-									button(class='btn btn-success') Follow
+									button(class='btn btn-success', onclick='/follow/#{tippers[j].head}') Follow
 						
 	
 script(src='//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')        
@@ -232,5 +232,3 @@ script
 	}
 	init();
 	
-
-

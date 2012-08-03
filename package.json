@@ -1,13 +1,16 @@
 {
-  "name": "tiporskip",
-  "description": "Wrapper client for the TipOrSkip API",
+  "name": "Follow-Finder",
   "version": "1.0.0",
   "main": "lib/client.js",
-  "dependencies": {
-    "request": "*"
+  "scripts":{
+    "start": "node app"
   },
-  "devDependencies": {},
-  "optionalDependencies": {},
+  "dependencies": {
+    "request":"*",
+    "express": "3.0.0rc1",
+    "oauth":"x.x.x",
+    "jade": "*"
+  },
   "engines": {
     "node": "*"
   }

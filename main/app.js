@@ -1,4 +1,5 @@
 function start(callback){
+
 	var TipsClient = require('../');
 	var product = require('../lib/product');
 	var tips = new TipsClient({
@@ -15,7 +16,6 @@ function start(callback){
 		}
 	}
 
-	//var user_id = '4f7723ddf5d16f4f20000295';
 	var user_id = '4f84a219b04953bc34000220';
 
 	tips.user.followers(user_id, function(error, ret){
@@ -29,11 +29,15 @@ function start(callback){
 				product_list = {}
 			;
 
+			tips.user.info('Ashwath', function(error, ret){
+				hash[ret.head] = ret;
+			});
+
 			foreach(ret.followers, function(actor){
 				hash[actor.head] = actor;
 			});
 		
-			tips.user.tips(user_id, function(error, ret1){
+			tips.user.tips('Ashwath', function(error, ret1){
 				if(error) {
 					console.log(error);
 				}
@@ -64,5 +68,21 @@ function start(callback){
 	});
 
 }
+
+function follow(access_token, user_id, callback){
+	var TipsClient = require('../');
+	var product = require('../lib/product');
+	var tips = new TipsClient({
+  		//key: '932a4e6f898648eca95ee2920fb99c2f',
+  		//secret: '9dd49dc4c9ac4657a0a65605f2c27657',
+  		key:'8ba43918d5b04a71aef489de9e2a88b0',
+  		secret:'72400e24cca646e6bb56432e16a4ce62',
+  		debug: true
+	});
+
+	tips.user.follow(access_token, user_id, callback);
+}
+
+exports.follow = follow;
 
 exports.start= start;
