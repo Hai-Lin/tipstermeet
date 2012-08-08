@@ -72,7 +72,7 @@ app.get('/', function(request, response){
 		});
 	}
 	else{
-		response.redirect("http://still-dawn-2812.herokuapp.com/gameon", 302);
+		response.redirect("/gameon", 302);
 	}
 });
 
