@@ -72,6 +72,7 @@ app.get('/', function(request, response){
 		});
 	}
 	else{
+
 		response.redirect("/gameon", 302);
 	}
 });
