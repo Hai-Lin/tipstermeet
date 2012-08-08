@@ -30,7 +30,7 @@ app.configure('development', function(){
 });
 
 // tos_oauth 
-var tos_request_token_url = "https://tips.by/oauth/request_token?oauth_callback=" + encodeURIComponent("http://localhost:5000/try_authorize"),
+var tos_request_token_url = "https://tips.by/oauth/request_token?oauth_callback=" + encodeURIComponent("http://still-dawn-2812.herokuapp.com/try_authorize"),
 tos_access_token_url = "https://tips.by/oauth/access_token",
 tos_api_key = '8ba43918d5b04a71aef489de9e2a88b0',
 			tos_api_secret = '72400e24cca646e6bb56432e16a4ce62',
@@ -51,7 +51,7 @@ app.get(/^\/try_authorize/, function(request, response, next){
 		session.me.tos_user_name = additional_data.user_name;
 		session.me.at = access_token;
 		session.me.ats = access_token_secret;
-		response.writeHead(302, {"location": "http://localhost:5000/gameon"});
+		response.writeHead(302, {"location": "http://still-dawn-2812.herokuapp.com/gameon"});
 		response.end();
 	});
 });
@@ -72,7 +72,7 @@ app.get('/', function(request, response){
 		});
 	}
 	else{
-		response.redirect("http://localhost:5000/gameon", 302);
+		response.redirect("http://still-dawn-2812.herokuapp.com/gameon", 302);
 	}
 });
 
