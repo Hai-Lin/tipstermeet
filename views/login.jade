@@ -1,0 +1,9 @@
+input(type='text', id='username')
+button(onclick='goToUrl()', href='#') Get Link
+a(id='link', href='#')Link
+script
+	function goToUrl(){
+		var username = document.getElementById('username');
+		var link = document.getElementById('link');
+		link.href='/'+username.value;
+		}
