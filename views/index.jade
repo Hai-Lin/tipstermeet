@@ -20,15 +20,20 @@ style
 	.product-div {margin-top:60px;position:relative; overflow:hidden; height:150px;  }
 	.product-div img, .product-div div {position:absolute;}
 	.product-cover {background:black; width:100%; height:100%; opacity:0.4;}
-	.product-name {opacity:0.8;background:black; color:#333333;width:100%; height:30%; padding:2px 0 0 5px;bottom:0px;}
-	.product-name p {color:white}
-	.product-sway {opacity:0.8;background:black; color:#333333;width:10%; height:10%; padding:2px 0 0 2px;}
+	.product-name {opacity:0.8;background:black; color:#333333;width:100%; height:13%; padding:2px 0 0 5px;bottom:0px;  overflow:hidden;}
+	.product-name p {color:white; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;}
+	.product-sway {opacity:0.8;background:black; color:#333333;width:15%; height:10%; }
 	.product-sway h4 {color:white}
-	.on{}
-	.on div[class='product-name'], .on div[class='product-sway'], .on div[class='user-name'], .on div[class='user-follow'] {display:block;}
-	.on div[class='product-cover'], .on div[class='user-cover'] {display:none;}
+	.product-select {opacity:0.8;background:black; color:#333333;width:10%; height:10%; right:0px;}
+	.product-select h4 {color:white}
+	.selected { }
+	.selected div[class='product-select'], .selected  div[class='user-name'], .selected  div[class='user-follow'] {display:block;}
+	.selected div[class='product-cover'], .selected  div[class='user-cover'], .selected div[class='product-name'], .selected div[class='product-sway'] {display:none;}
+	.hover{}
+	.hover div[class='product-name'], .hover div[class='product-sway'], .hover div[class='user-name'], .hover div[class='user-follow'] {display:block;}
+	.hover div[class='product-cover'], .hover div[class='product-select'],.hover div[class='user-cover'] {display:none;}
 	.off{}
-	.off div[class='product-name'], .off div[class='product-sway'], .off div[class='user-name'], .off div[class='user-follow'] {display:none;}
+	.off div[class='product-name'], .off div[class='product-sway'], .off div[class='user-name'], .off div[class='product-select'],.off div[class='user-follow'] {display:none;}
 	.off div[class='product-cover'], .off div[class='product-cover']{display:block;}
 	.user-div {margin-top:60px; position:relative; overflow:hidden; height:150px;  }
 	.user-div img, .user-div div {position:absolute;}
@@ -84,6 +89,8 @@ html
 						div(id='product_#{i}',class='container centered-text product-div span2 off'  )
 							img(src=product[i].thumbnail, width='100%')
 							div(class='product-cover')
+							div(class='product-select')
+								h4 &#10003;
 							div(class='product-name')
 								p #{product[i].name} 
 							div(class='product-sway')
@@ -103,8 +110,7 @@ html
 								div(class='user-name')
 									h4 #{tippers[j].name} 
 								div(class='user-follow')
-									a( class='btn btn-success', onclick='$.ajax({url:"/follow/#{tippers[j].head}", success: function(){alert("followed");}});') Follow
-									//-a( class='btn btn-success', onclick='$(this).html("followed");') Follow
+									a( class='btn btn-success', onclick='$.ajax({url:"/follow/#{tippers[j].head}", success: function(){$("#user_#{i}_#{j}").hide("slow"); }});') Follow
 						
 	
 script
@@ -204,7 +210,7 @@ script
 		var $product = $('#product_'+i);
 	$product.mouseover(function(){
 			var ii = $(this).attr('id').split('_')[1];
-		if(product_index[ii] ==0){$(this).attr('class','container centered-text product-div span2 on');}});
+		if(product_index[ii] ==0){$(this).attr('class','container centered-text product-div span2 hover');}});
 	$product.mouseout(function(){
 			var ii = $(this).attr('id').split('_')[1];
 		if(product_index[ii] == 0){$(this).attr('class','container centered-text product-div span2 off');}});
@@ -212,14 +218,14 @@ script
 	$product.click(function(){
 			var ii = $(this).attr('id').split('_')[1];
 		product_index[ii] =1;
-		$(this).attr('class','container centered-text product-div span2 on');
+		$(this).attr('class','container centered-text product-div span2 selected');
 			updateUser(ii);
 		});
 		for( var j=0; j<user_length[i]; j++)
 			{
 				var $user = $('#user_'+i+'_'+j);
 				$user.mouseover(function(){
-					$(this).attr('class','container centered-text user-div span2 on');});
+					$(this).attr('class','container centered-text user-div span2 hover');});
 				$user.mouseout(function(){
 					$(this).attr('class','container centered-text user-div span2 off');});
 					}
