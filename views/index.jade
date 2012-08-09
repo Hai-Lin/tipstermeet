@@ -14,8 +14,8 @@ script(src='//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')     �
 script(src='//d3t3tfuk4dded6.cloudfront.net/web/developer/bootstrap/js/bootstrap.min.js')
 style
 	.centered-text {text-align:center}
-	.arrow-left {font-size:50px; float:left; margin-top:100px; text-decoration:none;}
-	.arrow-right {font-size:50px; float:right;margin-top:82px; text-decoration:none;}
+	.arrow-left {font-size:15px; float:left; margin-top:100px; text-decoration:none;}
+	.arrow-right {font-size:15px; float:right;margin-top:82px; text-decoration:none;}
 	.arrow-right-user {font-size:50px; float:right;margin-top:100px; text-decoration:none;}
 	.product-div {margin-top:60px;position:relative; overflow:hidden; height:150px;  }
 	.product-div img, .product-div div {position:absolute;}
@@ -81,9 +81,10 @@ html
 			div(class='container span3 offset9', style='margin-top:50px;')
 				button(onclick='cleanAll()', class='btn btn-large') Reset
 			div(class='container')	
-				a(class="arrow-left ", onclick='goLeft()' )
+				a(class="arrow-left ", onclick='goLeft()',href='javascript:void(0);' )
 					img(src='/images/leftbtn.png')
-				a(class="arrow-right ", onclick='goRight()') &rsaquo;
+				a(class="arrow-right ", onclick='goRight()', href='javascript:void(0);') 
+					img(src='/images/rightbun.png')
 				div(class='row-fluid')
 					div(id='product_length', class='span1')
 					-for(var i =0; i<product.length; i++)
