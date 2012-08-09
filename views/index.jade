@@ -81,7 +81,7 @@ html
 			div(class='container header span9 offset1')
 				a(class='btn btn-primary learn-more') How to use
 				H1 Select a tip to find new people to follow
-			button(onclick='cleanAll()', class='btn btn-large reset') Reset
+			button(id='reset',onclick='cleanAll()', class='btn btn-large reset', rel='popvoer', data-content='Clear all current selected tips' ) Reset
 			div(class='container')	
 				a(class="arrow-left ", onclick='goLeft()',href='javascript:void(0);' )
 					img(src='/images/leftbtn.png')
@@ -207,6 +207,7 @@ script
 	}
 
 	function init(){
+	$('#reset').popover('show');
 	for(var i =0; i<length; i++)
 		product_index.push(0);
 	for(var i = 0; i<length; i++)
