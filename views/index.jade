@@ -59,7 +59,7 @@ html
 		div(class='navbar navbar-fixed-top')
 			div(class='navbar-inner')
 				div(class='container')
-					a(class='brand', href = '#') Tip Or Skip
+					a(class='brand', href = 'http://tips.by') Tip Or Skip
 		div(class='container main-div')
 			//-div(class='row')
 				//-div(class='span6 offset3')
@@ -79,7 +79,7 @@ html
 		
 			H1(style='margin-top:100px; text-align:center;') Select a tip to find new people to follow
 			div(class='container span3 offset9', style='margin-top:50px;')
-				button(onclick='cleanAll()', class='btn btn-danger') Clear
+				button(onclick='cleanAll()', class='btn btn-large') Reset
 			div(class='container')	
 				a(class="arrow-left ", onclick='goLeft()' ) &lsaquo;
 				a(class="arrow-right ", onclick='goRight()') &rsaquo;
@@ -95,7 +95,7 @@ html
 								p #{product[i].name} 
 							div(class='product-sway')
 								h4 #{product[i].sway} 
-			div(class='container span11', style=' margin-top: 30px;border-bottom:5px solid black;')
+			div(class='container span11', style=' margin-top: 30px;border-bottom:2px solid #ebeced;')
 			
 			div(class='container span12')	
 				div(class='row-fluid span12')
