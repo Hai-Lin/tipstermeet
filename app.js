@@ -72,7 +72,11 @@ app.get('/', function(request, response){
 		});
 	}
 	else{
-		response.redirect("/gameon",302);
+		var main = require('./main/app');
+		main.start(session.me.tos_user_id, function(result){
+			response.render('index',{ title: 'Express', tips: result });
+		});
+		//response.redirect("/gameon");
 	}
 });
 
