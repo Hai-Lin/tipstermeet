@@ -58,7 +58,6 @@ app.get(/^\/try_authorize/, function(request, response, next){
 
 //get access token then redirects to /gameon
 app.get('/', function(request, response){
-	if (!session.me.at) {
 		tos_oauth.getOAuthRequestToken(function(error, request_token, request_secret) {
 			if (error) {
 				return next(error);
@@ -70,14 +69,6 @@ app.get('/', function(request, response){
 			response.setHeader("location", "https://tips.by/oauth/authorize?oauth_token=" + request_token);
 			return response.end();
 		});
-	}
-	else{
-		var main = require('./main/app');
-		main.start(session.me.tos_user_id, function(result){
-			response.render('index',{ title: 'Express', tips: result });
-		});
-		//response.redirect("/gameon");
-	}
 });
 
 
