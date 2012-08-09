@@ -78,11 +78,11 @@ html
 							//-a(class="right carousel-control", href="#myCarousel", data-slide="next") &rsaquo;
 		
 			H1(style='margin-top:150px; text-align:center;') Click on the tips to see who to follow
-			div(class='container span3 offset9', style='margin-top:50px;')
+			div(class='container span3 offset10', style='margin-top:50px;')
 				button(onclick='cleanAll()', class='btn btn-danger') Clear All
 			div(class='container')	
-				a(class="arrow-left ", onclick='goLeft()', id='left', href='#left' ) &lsaquo;
-				a(class="arrow-right ", onclick='goRight()', href = '#left') &rsaquo;
+				a(class="arrow-left ", onclick='goLeft()' ) &lsaquo;
+				a(class="arrow-right ", onclick='goRight()') &rsaquo;
 				div(class='row-fluid')
 					div(id='product_length', class='span1')
 					-for(var i =0; i<product.length; i++)
