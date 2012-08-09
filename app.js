@@ -118,7 +118,7 @@ app.get('/gameon', function(request, response, next){
 	else {
 		var main = require('./main/app');
 		main.start(session.me.tos_user_id, function(result){
-			response.render('index',{ title: 'Express', tips: result });
+			response.render('index',{ title: 'tipster-finder', tips: result });
 		});
 	}
 });
