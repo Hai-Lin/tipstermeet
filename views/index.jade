@@ -50,6 +50,7 @@ style
 	.margin-right {margin-right:100px}
 	.arrow-left {font-size:50px;margin-top:230px;float:left; margin-left:50px;}
 	.arrow-right {font-size:50px;margin-top:230px;float:right; margin-right:50px}
+	.head {background-color:#ebeced;}
 html
 	head
 		title= title
@@ -77,14 +78,15 @@ html
 							//-a(class="left carousel-control", href="#myCarousel", data-slide="prev") &lsaquo;
 							//-a(class="right carousel-control", href="#myCarousel", data-slide="next") &rsaquo;
 		
-			H1(style='margin-top:100px; text-align:center;') Select a tip to find new people to follow
+			div(class='container header span10 offset1')
+				H1(style='margin-top:100px; text-align:center;') Select a tip to find new people to follow
 			div(class='container span3 offset9', style='margin-top:50px;')
 				button(onclick='cleanAll()', class='btn btn-large') Reset
 			div(class='container')	
 				a(class="arrow-left ", onclick='goLeft()',href='javascript:void(0);' )
 					img(src='/images/leftbtn.png')
 				a(class="arrow-right ", onclick='goRight()', href='javascript:void(0);') 
-					img(src='/images/rightbun.png')
+					img(src='/images/rightbtn.png')
 				div(class='row-fluid')
 					div(id='product_length', class='span1')
 					-for(var i =0; i<product.length; i++)
