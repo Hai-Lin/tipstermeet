@@ -14,9 +14,6 @@ script(src='//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')     �
 script(src='//d3t3tfuk4dded6.cloudfront.net/web/developer/bootstrap/js/bootstrap.min.js')
 style
 	.centered-text {text-align:center}
-	.arrow-left {font-size:15px; float:left; margin-top:100px; text-decoration:none;}
-	.arrow-right {font-size:15px; float:right;margin-top:82px; text-decoration:none;}
-	.arrow-right-user {font-size:50px; float:right;margin-top:100px; text-decoration:none;}
 	.product-div {margin-top:60px;position:relative; overflow:hidden; height:150px;  }
 	.product-div img, .product-div div {position:absolute;}
 	.product-cover {background:black; width:100%; height:100%; opacity:0.4;}
@@ -48,9 +45,9 @@ style
 	.main-div{background-color:white; min-height:1000px;}
 	.margin-left {margin-left:100px}
 	.margin-right {margin-right:100px}
-	.arrow-left {font-size:50px;margin-top:230px;float:left; margin-left:50px;}
-	.arrow-right {font-size:50px;margin-top:230px;float:right; margin-right:50px}
-	.head {background-color:#ebeced;}
+	.arrow-left {font-size:50px;margin-top:230px;float:left; margin-left:15px;}
+	.arrow-right {font-size:50px;margin-top:230px;float:right; margin-right:15px}
+	.header {margin-top:100px; background-color:#ebeced;}
 html
 	head
 		title= title
@@ -79,7 +76,7 @@ html
 							//-a(class="right carousel-control", href="#myCarousel", data-slide="next") &rsaquo;
 		
 			div(class='container header span10 offset1')
-				H1(style='margin-top:100px; text-align:center;') Select a tip to find new people to follow
+				H1 Select a tip to find new people to follow
 			div(class='container span3 offset9', style='margin-top:50px;')
 				button(onclick='cleanAll()', class='btn btn-large') Reset
 			div(class='container')	
