@@ -207,7 +207,7 @@ script
 	}
 
 	function init(){
-	$('#reset').popover('show');
+	$('#reset').popover({placement:'top',title:'Reset'});
 	for(var i =0; i<length; i++)
 		product_index.push(0);
 	for(var i = 0; i<length; i++)
