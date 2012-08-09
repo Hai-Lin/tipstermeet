@@ -83,7 +83,12 @@ html
 					div(class='modal-header')
 						button(type='button', class='clase', data-dismiss='modal')×
 						h3 Friend Finder
-				a(class='btn btn-primary learn-more', data-toggle='modal') How to use
+					div(class='modal-body')
+						p Click on the tip to see who tips this tip and you still not follow, clock mutiple tips to see the intersection of users who tip all the tips you selected.
+					div(class='modal-footer')
+						a(href='#', class='btn', data-dismiss='modal')Close
+						a(href='#', class='btn btn-primary')Got it
+				a(class='btn btn-primary learn-more', data-toggle='modal', href='#learn_more') How to use
 				h1 Select a tip to find new people to follow
 			button(id='reset',onclick='cleanAll()', class='btn btn-large reset', rel='popvoer', data-content='Clear all current selected tips' ) Reset
 			div(class='container')	
@@ -211,7 +216,6 @@ script
 	}
 
 	function init(){
-	$('#learn_more').modal();
 	$('#reset').popover({placement:'top',title:'Reset'});
 	for(var i =0; i<length; i++)
 		product_index.push(0);
