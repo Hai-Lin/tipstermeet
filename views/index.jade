@@ -79,8 +79,12 @@ html
 							//-a(class="right carousel-control", href="#myCarousel", data-slide="next") &rsaquo;
 		
 			div(class='container header span9 offset1')
+				div(class='modal hide', id='learn more')
+					div(class='modal-header')
+						button(type='button', class='clase', data-dismiss='modal')×
+						h3 Friend Finder
 				a(class='btn btn-primary learn-more') How to use
-				H1 Select a tip to find new people to follow
+				h1 Select a tip to find new people to follow
 			button(id='reset',onclick='cleanAll()', class='btn btn-large reset', rel='popvoer', data-content='Clear all current selected tips' ) Reset
 			div(class='container')	
 				a(class="arrow-left ", onclick='goLeft()',href='javascript:void(0);' )
