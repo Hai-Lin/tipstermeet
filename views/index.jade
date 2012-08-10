@@ -146,7 +146,7 @@ script
 		{
 			$('#product_'+i).hide();
 		}
-		current_page == maxPage ? l = current_page*10+10 : l = length; 
+		current_page == maxPage ? l = length : l = current_page*10+10; 
 		for(var i = current_page*10; i < l; ++i)
 		{
 			$('#product_'+i).show();
