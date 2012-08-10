@@ -147,7 +147,6 @@ script
 	function goRight(){
 	if(current_page != maxPage)
 	{
-		newAlert('Oh yeah!');
 		current_page++;
 		cleanAll();
 		var l;
@@ -160,6 +159,9 @@ script
 		{
 			$('#product_'+i).show();
 		}
+		}
+	else{
+		newAlert("That's all we have");
 		}
 	}
 	function goLeft(){
@@ -176,6 +178,11 @@ script
 				$('#product_'+i).show();
 			}
 		}
+		else
+		{
+		newAlert("That's all we have");
+		}
+
 	}
 				
 
