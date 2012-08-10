@@ -103,6 +103,7 @@ html
 				a(class='btn btn-primary learn-more', data-toggle='modal', href='#learn_more') How to use
 				h1 Select tips to find new people to follow
 			button(id='reset',onclick='cleanAll()', class='btn btn-large reset', rel='popvoer', data-content='Clear all current selected tips' ) Reset
+			div(id='alert-area')
 			div(class='container')	
 				a(class="arrow-left ", onclick='goLeft()',href='javascript:void(0);' )
 					img(src='/images/leftbtn.png')
@@ -140,7 +141,7 @@ html
 	
 script
 	function newAlert (message) {
-	$(".header").append($("<div class='alert fade in alert-div'><p> " + message + " </p></div>"));
+	$("#alert-area").append($("<div class='alert fade in alert-div'><p> " + message + " </p></div>"));
 	$(".alert-div").delay(2000).fadeOut("slow", function () { $(this).remove(); });
 	}
 	function goRight(){
