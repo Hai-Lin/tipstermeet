@@ -137,8 +137,9 @@ html
 	
 script
 	function goRight(){
+	if(current_page != maxPage)
+	{
 		cleanAll();
-		current_page++;
 		var l;
 		for(var i =0; i<length; ++i)
 		{
@@ -148,6 +149,7 @@ script
 		for(var i = current_page*10; i<l; ++i)
 		{
 			$('#product_'+i).show();
+		}
 		}
 	}
 	function goLeft(){
