@@ -102,6 +102,9 @@ html
 				a(class='btn btn-primary learn-more', data-toggle='modal', href='#learn_more') How to use
 				h1 Select tips to find new people to follow
 			button(id='reset',onclick='cleanAll()', class='btn btn-large reset', rel='popvoer', data-content='Clear all current selected tips' ) Reset
+			div(class='alert', id='alert')
+				a(class='close', data-dismiss='alert')×
+				p This is a alert
 			div(class='container')	
 				a(class="arrow-left ", onclick='goLeft()',href='javascript:void(0);' )
 					img(src='/images/leftbtn.png')
@@ -138,9 +141,14 @@ html
 						
 	
 script
+	function createAutoClosingAlert(selector, delay) {
+	var alert = $(selector).alert();
+	window.setTimeout(function() { alert.alert('close') }, delay);
+	}
 	function goRight(){
 	if(current_page != maxPage)
 	{
+		createAutoClosingAlert(".alert", 2000);
 		current_page++;
 		cleanAll();
 		var l;
