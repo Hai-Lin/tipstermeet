@@ -139,6 +139,7 @@ script
 	function goRight(){
 	if(current_page != maxPage)
 	{
+		current_page++;
 		cleanAll();
 		var l;
 		for(var i =0; i<length; ++i)
@@ -146,7 +147,7 @@ script
 			$('#product_'+i).hide();
 		}
 		current_page == maxPage ? l = current_page*10+10 : l = length; 
-		for(var i = current_page*10; i<l; ++i)
+		for(var i = current_page*10; i < l; ++i)
 		{
 			$('#product_'+i).show();
 		}
