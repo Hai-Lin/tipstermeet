@@ -140,8 +140,8 @@ html
 	
 script
 	function newAlert (message) {
-	$("#header").append($("<div class='alert fade in alert-div'><p> " + message + " </p></div>"));
-	$(".alert-message").delay(2000).fadeOut("slow", function () { $(this).remove(); });
+	$(".header").append($("<div class='alert fade in alert-div'><p> " + message + " </p></div>"));
+	$(".alert-div").delay(2000).fadeOut("slow", function () { $(this).remove(); });
 	}
 	function goRight(){
 	if(current_page != maxPage)
