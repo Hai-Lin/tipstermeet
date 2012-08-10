@@ -53,6 +53,7 @@ style
 	.header {margin:70px 0 0 82px; background-color:#ebeced; height:53px; padding:20px 0 0 35px; width:938px;}
 	.learn-more { float:right; margin:5px 86px 0 0;}
 	.reset { margin:40px 0 0 993px}
+	.alert-div {margin:10px 100px 0 100px; height:20px}
 html
 	head
 		title= title
@@ -102,9 +103,6 @@ html
 				a(class='btn btn-primary learn-more', data-toggle='modal', href='#learn_more') How to use
 				h1 Select tips to find new people to follow
 			button(id='reset',onclick='cleanAll()', class='btn btn-large reset', rel='popvoer', data-content='Clear all current selected tips' ) Reset
-			div(class='alert', id='alert')
-				a(class='close', data-dismiss='alert')×
-				p This is a alert
 			div(class='container')	
 				a(class="arrow-left ", onclick='goLeft()',href='javascript:void(0);' )
 					img(src='/images/leftbtn.png')
@@ -141,14 +139,14 @@ html
 						
 	
 script
-	function createAutoClosingAlert(selector, delay) {
-	var alert = $(selector).alert();
-	window.setTimeout(function() { alert.alert('close') }, delay);
+	function newAlert (message) {
+	$("#header").append($("<div class='alert fade in alert-div'><p> " + message + " </p></div>"));
+	$(".alert-message").delay(2000).fadeOut("slow", function () { $(this).remove(); });
 	}
 	function goRight(){
 	if(current_page != maxPage)
 	{
-		createAutoClosingAlert(".alert", 2000);
+		newAlert('Oh yeah!');
 		current_page++;
 		cleanAll();
 		var l;
