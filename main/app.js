@@ -16,7 +16,7 @@ function start(user_id, callback){
 		}
 	}
 
-	tips.user.followers(user_id, 0,function(error, ret){
+	tips.user.following(user_id, 0,function(error, ret){
 		if(error){
 			console.log(error);
 		}
