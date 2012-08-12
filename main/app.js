@@ -16,7 +16,7 @@ function start(user_id, callback){
 		}
 	}
 
-	tips.user.followers(user_id, 0,function(error, ret){
+	tips.user.following(user_id, 0,function(error, ret){
 		if(error){
 			console.log(error);
 		}
@@ -33,11 +33,11 @@ function start(user_id, callback){
 				}
 				else{
 					foreach(ret.followers, function(actor){
-						hash[actor.head] = actor;
+						hash[actor.id] = actor;
 					});
 
 					foreach(ret_500.followers, function(actor_500){
-						hash[actor_500.head] = actor_500;
+						hash[actor_500.id] = actor_500;
 					});
 					// adding user to hash
 					hash[user_id] = user_id;				
@@ -58,7 +58,7 @@ function start(user_id, callback){
 							else {
 								tipster_list = [];
 								foreach(ret2.tipped_by, function(actor1){							
-									if(!hash[actor1.head]){
+									if(!hash[actor1.id]){
 										tipster_list.push(actor1);
 									}	
 								});
