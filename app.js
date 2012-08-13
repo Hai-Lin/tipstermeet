@@ -54,14 +54,14 @@ app.get(/^\/try_authorize/, function(request, response, next){
 		session.me.tos_user_name = additional_data.user_name;
 		session.me.at = access_token;
 		session.me.ats = access_token_secret;
-		response.writeHead(302, {"location": "http://tipster-finder.herokuapp.com/"});
+		response.writeHead(302, {"location": "http://tipster-finder.herokuapp.com/gameon"});
 		response.end();
 	});
 });
 
 //get access token then redirects to /gameon
 app.get('/', function(request, response){
-	if (!session.me.at) {
+	//if (!session.me.at) {
 		tos_oauth.getOAuthRequestToken(function(error, request_token, request_secret) {
 			if (error) {
 				return next(error);
@@ -72,10 +72,10 @@ app.get('/', function(request, response){
 			response.setHeader("location", "https://tips.by/oauth/authorize?oauth_token=" + request_token);
 			return response.end();
 		});
-	}
-	else{
-   		return response.redirect("http://tipster-finder.herokuapp.com/gameon",300);
-    }
+	//}
+	//else{
+   	//	return response.redirect("http://tipster-finder.herokuapp.com/gameon",300);
+    //}
 });
 
 
