@@ -47,6 +47,9 @@ app.get(/^\/try_authorize/, function(request, response, next){
 	var parsed_url = url.parse(request.url, true);
 
 	tos_oauth.getOAuthAccessToken(session.me.rt, session.me.rts, parsed_url.query.oauth_verifier, function(error, access_token, access_token_secret, additional_data) {
+		if (!additional_data) {
+			console.log("additional_data is null, denied_authorization");
+		};
 		session.me.tos_user_id = additional_data.user_id;
 		session.me.tos_user_name = additional_data.user_name;
 		session.me.at = access_token;
