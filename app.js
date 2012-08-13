@@ -7,6 +7,7 @@ var express = require('express')
 , path = require('path')
 , OAuth = require("oauth").OAuth
 , url = require("url")
+, cookie = require( "./cookie-node" )
 ;
 
 var app = express();
@@ -55,7 +56,8 @@ app.get(/^\/try_authorize/, function(request, response, next){
 		session.me.at = access_token;
 		session.me.ats = access_token_secret;
 		// To Write a Cookie and redirect to gamepage
-		response.writeHead(302,{'Set-Cookie': 'cookie_user_id='+session.me.tos_user_id,'Content-Type': 'text/plain'}, {"location": "http://tipster-finder.herokuapp.com/gameon"});
+		response.setCookie( "user_id", session.me.tos_user_id);
+		response.writeHead(302,{"location": "http://tipster-finder.herokuapp.com/gameon"});
 		response.end();
 	});
 });
@@ -125,7 +127,8 @@ app.get('/gameon', function(request, response, next){
 	}
 	else {
 		var main = require('./main/app');
-		main.start(request.headers.cookie, function(result){
+		var user_id = req.getCookie("user_id"); 
+		main.start(user_id, function(result){
 			response.render('index',{ title: 'tipster-finder', tips: result });
 		});
 	}
