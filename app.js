@@ -74,7 +74,7 @@ app.get('/', function(request, response){
 		});
 	}
 	else{
-   		return response.redirect("http://tipster-finder.herokuapp.com/gameon");
+   		return response.redirect("http://tipster-finder.herokuapp.com/gameon",300);
     }
 });
 
