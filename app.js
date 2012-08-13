@@ -32,8 +32,8 @@ app.configure('development', function(){
 // tos_oauth 
 var tos_request_token_url = "https://tips.by/oauth/request_token?oauth_callback=" + encodeURIComponent("http://tipster-finder.herokuapp.com/try_authorize"),
 	tos_access_token_url = "https://tips.by/oauth/access_token",
-	tos_api_key = '8ba43918d5b04a71aef489de9e2a88b0',
-	tos_api_secret = '72400e24cca646e6bb56432e16a4ce62',
+	tos_api_key = '932a4e6f898648eca95ee2920fb99c2f',
+	tos_api_secret = '9dd49dc4c9ac4657a0a65605f2c27657',
 	tos_oauth = new OAuth(tos_request_token_url, tos_access_token_url, tos_api_key, tos_api_secret, "1.0", null, "HMAC-SHA1")
 			;
 var session = { "me": {"rt": "", "rts": "", "at": "", "ats": "", "tos_user_id": "", "tos_user_name": ""} };    
@@ -51,14 +51,14 @@ app.get(/^\/try_authorize/, function(request, response, next){
 		session.me.tos_user_name = additional_data.user_name;
 		session.me.at = access_token;
 		session.me.ats = access_token_secret;
-		response.writeHead(302, {"location": "http://tipster-finder.herokuapp.com/gameon"});
+		response.writeHead(302, {"location": "http://tipster-finder.herokuapp.com/"});
 		response.end();
 	});
 });
 
 //get access token then redirects to /gameon
 app.get('/', function(request, response){
-	//if (!session.me.at) {
+	if (!session.me.at) {
 		tos_oauth.getOAuthRequestToken(function(error, request_token, request_secret) {
 			if (error) {
 				return next(error);
@@ -69,10 +69,10 @@ app.get('/', function(request, response){
 			response.setHeader("location", "https://tips.by/oauth/authorize?oauth_token=" + request_token);
 			return response.end();
 		});
-	//}
-	//else{
-   // response.redirect("http://tipster-finder.herokuapp.com/gameon", 302);
-  //}
+	}
+	else{
+   		return response.redirect("http://tipster-finder.herokuapp.com/gameon", 302);
+    }
 });
 
 
