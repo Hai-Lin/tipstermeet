@@ -12,7 +12,7 @@ var express = require('express')
 var app = express();
 
 app.configure(function(){
-	app.set('port', process.env.PORT || 5000);
+	app.set('port', process.env.PORT || 3000);
 	app.set('views', __dirname + '/views');
 	app.set('view engine', 'jade');
 	app.use(express.favicon());
@@ -31,12 +31,12 @@ app.configure('development', function(){
 
 // tos_oauth 
 var tos_request_token_url = "https://tips.by/oauth/request_token?oauth_callback=" + encodeURIComponent("http://tipster-finder.herokuapp.com/try_authorize"),
-tos_access_token_url = "https://tips.by/oauth/access_token",
-tos_api_key = '8ba43918d5b04a71aef489de9e2a88b0',
-			tos_api_secret = '72400e24cca646e6bb56432e16a4ce62',
-			tos_oauth = new OAuth(tos_request_token_url, tos_access_token_url, tos_api_key, tos_api_secret, "1.0", null, "HMAC-SHA1")
+	tos_access_token_url = "https://tips.by/oauth/access_token",
+	tos_api_key = '8ba43918d5b04a71aef489de9e2a88b0',
+	tos_api_secret = '72400e24cca646e6bb56432e16a4ce62',
+	tos_oauth = new OAuth(tos_request_token_url, tos_access_token_url, tos_api_key, tos_api_secret, "1.0", null, "HMAC-SHA1")
 			;
-			var session = { "me": {"rt": "", "rts": "", "at": "", "ats": "", "tos_user_id": "", "tos_user_name": ""} };    
+var session = { "me": {"rt": "", "rts": "", "at": "", "ats": "", "tos_user_id": "", "tos_user_name": ""} };    
 
 // HANDLERS
 app.get(/^\/try_authorize/, function(request, response, next){
@@ -58,17 +58,21 @@ app.get(/^\/try_authorize/, function(request, response, next){
 
 //get access token then redirects to /gameon
 app.get('/', function(request, response){
+	if (!session.me.at) {
 		tos_oauth.getOAuthRequestToken(function(error, request_token, request_secret) {
 			if (error) {
 				return next(error);
 			};
-
 			session.me.rt = request_token;
 			session.me.rts = request_secret;
 			response.statusCode = 302;
 			response.setHeader("location", "https://tips.by/oauth/authorize?oauth_token=" + request_token);
 			return response.end();
 		});
+	}
+	else{
+    response.redirect("http://tipster-finder.herokuapp.com/gameon", 302);
+  }
 });
 
 
