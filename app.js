@@ -64,7 +64,7 @@ app.get(/^\/try_authorize/, function(request, response, next){
 
 //get access token then redirects to /gameon
 app.get('/', function(request, response){
-	if (!session.me.at) {
+	//if (!session.me.at) {
 		tos_oauth.getOAuthRequestToken(function(error, request_token, request_secret) {
 			if (error) {
 				return next(error);
@@ -75,10 +75,10 @@ app.get('/', function(request, response){
 			response.setHeader("location", "https://tips.by/oauth/authorize?oauth_token=" + request_token);
 			return response.end();
 		});
-	}
-	else{
-   		return response.redirect("http://tipster-finder.herokuapp.com/gameon",302);
-    }
+	//}
+	//else{
+   	//	return response.redirect("http://tipster-finder.herokuapp.com/gameon",300);
+    //}
 });
 
 
