@@ -27,16 +27,16 @@ function start(user_id, callback){
 				product_list = {}
 			;
 
-			tips.user.followers(user_id, 500, function(error, ret_500){
+			tips.user.following(user_id, 500, function(error, ret_500){
 				if(error){
 					console.log(error);
 				}
 				else{
-					foreach(ret.followers, function(actor){
+					foreach(ret.following, function(actor){
 						hash[actor.id] = actor;
 					});
 
-					foreach(ret_500.followers, function(actor_500){
+					foreach(ret_500.following, function(actor_500){
 						hash[actor_500.id] = actor_500;
 					});
 					// adding user to hash
