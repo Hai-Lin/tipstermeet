@@ -48,13 +48,14 @@ app.get(/^\/try_authorize/, function(request, response, next){
 
 	tos_oauth.getOAuthAccessToken(session.me.rt, session.me.rts, parsed_url.query.oauth_verifier, function(error, access_token, access_token_secret, additional_data) {
 		if (!additional_data) {
-			console.log("additional_data is null, denied_authorization");
+			console.log("Denied_authorization");
 		};
 		session.me.tos_user_id = additional_data.user_id;
 		session.me.tos_user_name = additional_data.user_name;
 		session.me.at = access_token;
 		session.me.ats = access_token_secret;
-		response.writeHead(302, {"location": "http://tipster-finder.herokuapp.com/"});
+		// To Write a Cookie and redirect to gamepage
+		response.writeHead(302,{'Set-Cookie': 'cookie_user_id='+session.me.tos_user_id,'Content-Type': 'text/plain'}, {"location": "http://tipster-finder.herokuapp.com/gameon"});
 		response.end();
 	});
 });
@@ -74,7 +75,7 @@ app.get('/', function(request, response){
 		});
 	}
 	else{
-   		return response.redirect("http://tipster-finder.herokuapp.com/gameon", 302);
+   		return response.redirect("http://tipster-finder.herokuapp.com/gameon",302);
     }
 });
 
@@ -124,7 +125,7 @@ app.get('/gameon', function(request, response, next){
 	}
 	else {
 		var main = require('./main/app');
-		main.start(session.me.tos_user_id, function(result){
+		main.start(request.headers.cookie, function(result){
 			response.render('index',{ title: 'tipster-finder', tips: result });
 		});
 	}
