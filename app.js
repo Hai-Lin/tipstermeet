@@ -55,7 +55,7 @@ app.get(/^\/try_authorize/, function(request, response, callback){
 		session.me.at = access_token;
 		session.me.ats = access_token_secret;
 		// To Write a Cookie and redirect to gamepage
-		var expires = new Date(),
+		var expires = new Date();
 			expires.setMonth(expires.getMonth() + 1);
 		response.setHeader("Set-Cookie","id="+session.me.tos_user_id+";Expires="+expires.toUTCString());
 		response.writeHead(302,{"location": "http://tipster-finder.herokuapp.com/gameon"});
