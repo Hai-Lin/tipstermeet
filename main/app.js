@@ -85,6 +85,7 @@ tips.user.tips(user_id, function(error, ret1){
 			product.tipsters(tip.head, function(error, ret2){
 				if(error) {
 					console.log(error);
+					return callback(error);				
 				}
 				else {
 					tipster_list = [];

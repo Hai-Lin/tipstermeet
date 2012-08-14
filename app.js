@@ -7,7 +7,6 @@ var express = require('express')
 , path = require('path')
 , OAuth = require("oauth").OAuth
 , url = require("url")
-, cookie = require( "./cookie-node" )
 ;
 
 var app = express();
@@ -40,7 +39,7 @@ var tos_request_token_url = "https://tips.by/oauth/request_token?oauth_callback=
 var session = { "me": {"rt": "", "rts": "", "at": "", "ats": "", "tos_user_id": "", "tos_user_name": ""} };    
 
 // HANDLERS
-app.get(/^\/try_authorize/, function(request, response, next){
+app.get(/^\/try_authorize/, function(request, response, callback){
 	if (!request.query.oauth_verifier) {
 		return response.send("denied_authorization");
 	};
@@ -56,18 +55,21 @@ app.get(/^\/try_authorize/, function(request, response, next){
 		session.me.at = access_token;
 		session.me.ats = access_token_secret;
 		// To Write a Cookie and redirect to gamepage
-		response.setCookie( "user_id", session.me.tos_user_id);
+		var expires = new Date();
+			expires.setMonth(expires.getMonth() + 1);
+		response.setHeader("Set-Cookie","id="+session.me.tos_user_id+";Expires="+expires.toUTCString());
+		//response.setCookie( "user_id", session.me.tos_user_id);
 		response.writeHead(302,{"location": "http://tipster-finder.herokuapp.com/gameon"});
 		response.end();
 	});
 });
-
+//http://tipster-finder.herokuapp.com/gameon
 //get access token then redirects to /gameon
-app.get('/', function(request, response){
+app.get('/', function(request, response, callback){
 	//if (!session.me.at) {
 		tos_oauth.getOAuthRequestToken(function(error, request_token, request_secret) {
 			if (error) {
-				return next(error);
+				return callback(error);
 			};
 			session.me.rt = request_token;
 			session.me.rts = request_secret;
@@ -83,11 +85,11 @@ app.get('/', function(request, response){
 
 
 // follow 
-app.get('/follow/:id', function(request, response, next){
+app.get('/follow/:id', function(request, response, callback){
 	if (!session.me.at) {
 		tos_oauth.getOAuthRequestToken(function(error, request_token, request_secret) {
 			if (error) {
-				return next(error);
+				return callback(error);
 			};
 
 			session.me.rt = request_token;
@@ -112,11 +114,11 @@ app.get('/follow/:id', function(request, response, next){
 });
 
 // starts game
-app.get('/gameon', function(request, response, next){
+app.get('/gameon', function(request, response, callback){
 	if (!session.me.at) {
 		tos_oauth.getOAuthRequestToken(function(error, request_token, request_secret) {
 			if (error) {
-				return next(error);
+				return callback(error);
 			}
 			session.me.rt = request_token;
 			session.me.rts = request_secret;
@@ -126,11 +128,27 @@ app.get('/gameon', function(request, response, next){
 		});
 	}
 	else {
-		var main = require('./main/app');
-		var user_id = req.getCookie("user_id"); 
-		main.start(user_id, function(result){
-			response.render('index',{ title: 'tipster-finder', tips: result });
-		});
+		var main = require('./main/app'),
+			user_id = 0
+			;
+		// Geting user_id from cookie	
+		if (request.headers && request.headers.cookie) {
+			request.headers.cookie.split(";").forEach(function(cookie) {
+				var crumbs = cookie.split("=");
+				//if (crumbs[0] === "id" && crumbs[1]) {
+					console.log("crumbs[1] :", crumbs[1]);
+					user_id = crumbs[1];
+				//};
+			});
+			console.log("user_id :", user_id);
+			main.start(user_id, function(result){
+				response.render('index',{ title: 'tipster-finder', tips: result });
+			});
+		}
+		else {
+			console.log("Error: Session not stored in cookies");
+			return callback();
+		}			
 	}
 });
 
