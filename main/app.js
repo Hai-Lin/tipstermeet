@@ -14,7 +14,7 @@ var foreach = function(obj, func) {
 };
 
 
-function start(user_id, callback){
+function start(user_id, request, response, callback){
 
 	var dp = new events.EventEmitter();
 	////////EventEmitter's listeners definitions
@@ -50,7 +50,7 @@ function start(user_id, callback){
 			return callback(error);
 		}
 		else{
-			processing(user_id, hash, callback);
+			processing(user_id, hash, request, response, callback);
 		}
 	});
 
@@ -66,7 +66,7 @@ function start(user_id, callback){
 
 };	
 	
-function processing(user_id, hash, callback){
+function processing(user_id, hash, request, response, callback){
 
 var tipster_list = [],
 	final_list = {},

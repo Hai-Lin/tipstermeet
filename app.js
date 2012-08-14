@@ -132,7 +132,7 @@ app.get('/gameon', function(request, response, callback){
 				user_id = crumbs[1];
 			});
 			console.log("user_id :", user_id);
-			main.start(user_id, function(result){
+			main.start(user_id, request, response, function(result){
 				response.render('index',{ title: 'tipster-finder', tips: result });
 			});
 		}
