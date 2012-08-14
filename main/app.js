@@ -24,6 +24,7 @@ function start(user_id, callback){
 		tips.user.following(user_id, offset,function(error, ret){
 			if(error){
 				console.log(error);
+				response.render('404',{ title: 'tipster-finder'});
 				return callback(error);
 			}
 			else{			
@@ -75,6 +76,7 @@ var tipster_list = [],
 tips.user.tips(user_id, function(error, ret1){
 	if(error) {
 		console.log(error);
+		response.render('404',{ title: 'tipster-finder'});
 		return callback(error);
 	}
 	else{
@@ -83,6 +85,7 @@ tips.user.tips(user_id, function(error, ret1){
 			product.tipsters(tip.head, function(error, ret2){
 				if(error) {
 					console.log(error);
+					response.render('404',{ title: 'tipster-finder'});
 					return callback(error);				
 				}
 				else {
