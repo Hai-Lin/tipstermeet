@@ -55,32 +55,26 @@ app.get(/^\/try_authorize/, function(request, response, callback){
 		session.me.at = access_token;
 		session.me.ats = access_token_secret;
 		// To Write a Cookie and redirect to gamepage
-		var expires = new Date();
+		var expires = new Date(),
 			expires.setMonth(expires.getMonth() + 1);
 		response.setHeader("Set-Cookie","id="+session.me.tos_user_id+";Expires="+expires.toUTCString());
-		//response.setCookie( "user_id", session.me.tos_user_id);
 		response.writeHead(302,{"location": "http://tipster-finder.herokuapp.com/gameon"});
 		response.end();
 	});
 });
-//http://tipster-finder.herokuapp.com/gameon
+
 //get access token then redirects to /gameon
 app.get('/', function(request, response, callback){
-	//if (!session.me.at) {
-		tos_oauth.getOAuthRequestToken(function(error, request_token, request_secret) {
-			if (error) {
-				return callback(error);
-			};
-			session.me.rt = request_token;
-			session.me.rts = request_secret;
-			response.statusCode = 302;
-			response.setHeader("location", "https://tips.by/oauth/authorize?oauth_token=" + request_token);
-			return response.end();
-		});
-	//}
-	//else{
-   	//	return response.redirect("http://tipster-finder.herokuapp.com/gameon",300);
-    //}
+	tos_oauth.getOAuthRequestToken(function(error, request_token, request_secret) {
+		if (error) {
+			return callback(error);
+		};
+		session.me.rt = request_token;
+		session.me.rts = request_secret;
+		response.statusCode = 302;
+		response.setHeader("location", "https://tips.by/oauth/authorize?oauth_token=" + request_token);
+		return response.end();
+	});
 });
 
 
@@ -91,7 +85,6 @@ app.get('/follow/:id', function(request, response, callback){
 			if (error) {
 				return callback(error);
 			};
-
 			session.me.rt = request_token;
 			session.me.rts = request_secret;
 			response.statusCode = 302;
@@ -135,10 +128,8 @@ app.get('/gameon', function(request, response, callback){
 		if (request.headers && request.headers.cookie) {
 			request.headers.cookie.split(";").forEach(function(cookie) {
 				var crumbs = cookie.split("=");
-				//if (crumbs[0] === "id" && crumbs[1]) {
-					console.log("crumbs[1] :", crumbs[1]);
-					user_id = crumbs[1];
-				//};
+				console.log("crumbs[1] :", crumbs[1]);
+				user_id = crumbs[1];
 			});
 			console.log("user_id :", user_id);
 			main.start(user_id, function(result){
