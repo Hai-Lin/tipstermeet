@@ -14,7 +14,7 @@ var foreach = function(obj, func) {
 };
 
 
-function start(user_id, request, response, callback){
+function start(user_id, callback){
 
 	var dp = new events.EventEmitter();
 	////////EventEmitter's listeners definitions
@@ -24,7 +24,6 @@ function start(user_id, request, response, callback){
 		tips.user.following(user_id, offset,function(error, ret){
 			if(error){
 				console.log(error);
-				response.render('404',{ title: 'tipster-finder'});
 				return callback(error);
 			}
 			else{			
@@ -50,7 +49,7 @@ function start(user_id, request, response, callback){
 			return callback(error);
 		}
 		else{
-			processing(user_id, hash, request, response, callback);
+			processing(user_id, hash, callback);
 		}
 	});
 
@@ -66,7 +65,7 @@ function start(user_id, request, response, callback){
 
 };	
 	
-function processing(user_id, hash, request, response, callback){
+function processing(user_id, hash, callback){
 
 var tipster_list = [],
 	final_list = {},
@@ -76,7 +75,6 @@ var tipster_list = [],
 tips.user.tips(user_id, function(error, ret1){
 	if(error) {
 		console.log(error);
-		response.render('404',{ title: 'tipster-finder'});
 		return callback(error);
 	}
 	else{
@@ -85,7 +83,6 @@ tips.user.tips(user_id, function(error, ret1){
 			product.tipsters(tip.head, function(error, ret2){
 				if(error) {
 					console.log(error);
-					response.render('404',{ title: 'tipster-finder'});
 					return callback(error);				
 				}
 				else {

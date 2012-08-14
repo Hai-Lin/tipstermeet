@@ -30,7 +30,7 @@ app.configure('development', function(){
 });
 
 // tos_oauth 
-var tos_request_token_url = "https://tips.by/oauth/request_token?oauth_callback=" + encodeURIComponent("http://tipster-finder.herokuapp.com/try_authorize"),
+var tos_request_token_url = "https://tips.by/oauth/request_token?oauth_callback=" + encodeURIComponent("http://localhost:3000/try_authorize"),
 	tos_access_token_url = "https://tips.by/oauth/access_token",
 	tos_api_key = '8ba43918d5b04a71aef489de9e2a88b0',
 	tos_api_secret = '72400e24cca646e6bb56432e16a4ce62',
@@ -54,16 +54,15 @@ app.get(/^\/try_authorize/, function(request, response, callback){
 		session.me.tos_user_name = additional_data.user_name;
 		session.me.at = access_token;
 		session.me.ats = access_token_secret;
-
 		// To Write a Cookie and redirect to gamepage
 		var expires = new Date();
 			expires.setMonth(expires.getMonth() + 1);
-		response.setHeader("Set-Cookie","user_id="+session.me.tos_user_id+";Expires="+expires.toUTCString());
-		response.writeHead(302,{"location": "tipster-finder.herokuapp.com/gameon"});
+		response.setHeader("Set-Cookie","id="+session.me.tos_user_id+";Expires="+expires.toUTCString());
+		response.writeHead(302,{"location": "http://localhost:3000/gameon"});
 		response.end();
 	});
 });
-//tipster-finder.herokuapp.com
+
 //get access token then redirects to /gameon
 app.get('/', function(request, response, callback){
 	tos_oauth.getOAuthRequestToken(function(error, request_token, request_secret) {
@@ -129,18 +128,20 @@ app.get('/gameon', function(request, response, callback){
 		if (request.headers && request.headers.cookie) {
 			request.headers.cookie.split(";").forEach(function(cookie) {
 				var crumbs = cookie.split("=");
-				//if (crumbs[0] == "user_id" && crumbs[1]) {
-				user_id = crumbs[1];
-				//console.log("crumbs[1] :", crumbs[1]);
-				//};
+				if (crumbs[0] == " id" && crumbs[1]) {
+					console.log("crumbs[0] :", crumbs[0]);
+					console.log("crumbs[1] :", crumbs[1]);
+					user_id = crumbs[1];
+				}
 			});
 			console.log("user_id :", user_id);
-			main.start(user_id, request, response, function(result){
+			main.start(user_id, function(result){
 				response.render('index',{ title: 'tipster-finder', tips: result });
 			});
 		}
 		else {
 			console.log("Error: Session not stored in cookies");
+			return callback();
 		}			
 	}
 });
