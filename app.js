@@ -57,7 +57,7 @@ app.get(/^\/try_authorize/, function(request, response, callback){
 		// To Write a Cookie and redirect to gamepage
 		var expires = new Date();
 			expires.setMonth(expires.getMonth() + 1);
-		response.setHeader("Set-Cookie","id="+session.me.tos_user_id+";Expires="+expires.toUTCString());
+		response.setHeader("Set-Cookie","user_id="+session.me.tos_user_id+";Expires="+expires.toUTCString());
 		response.writeHead(302,{"location": "http://tipster-finder.herokuapp.com/gameon"});
 		response.end();
 	});
@@ -128,8 +128,10 @@ app.get('/gameon', function(request, response, callback){
 		if (request.headers && request.headers.cookie) {
 			request.headers.cookie.split(";").forEach(function(cookie) {
 				var crumbs = cookie.split("=");
-				console.log("crumbs[1] :", crumbs[1]);
+				if (crumbs[0] == "user_id" && crumbs[1]) {
 				user_id = crumbs[1];
+				console.log("crumbs[1] :", crumbs[1]);
+				};
 			});
 			console.log("user_id :", user_id);
 			main.start(user_id, request, response, function(result){
