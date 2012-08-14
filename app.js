@@ -54,15 +54,16 @@ app.get(/^\/try_authorize/, function(request, response, callback){
 		session.me.tos_user_name = additional_data.user_name;
 		session.me.at = access_token;
 		session.me.ats = access_token_secret;
+
 		// To Write a Cookie and redirect to gamepage
 		var expires = new Date();
 			expires.setMonth(expires.getMonth() + 1);
 		response.setHeader("Set-Cookie","user_id="+session.me.tos_user_id+";Expires="+expires.toUTCString());
-		response.writeHead(302,{"location": "http://tipster-finder.herokuapp.com/gameon"});
+		response.writeHead(302,{"location": "tipster-finder.herokuapp.com/gameon"});
 		response.end();
 	});
 });
-
+//tipster-finder.herokuapp.com
 //get access token then redirects to /gameon
 app.get('/', function(request, response, callback){
 	tos_oauth.getOAuthRequestToken(function(error, request_token, request_secret) {
@@ -128,10 +129,10 @@ app.get('/gameon', function(request, response, callback){
 		if (request.headers && request.headers.cookie) {
 			request.headers.cookie.split(";").forEach(function(cookie) {
 				var crumbs = cookie.split("=");
-				if (crumbs[0] == "user_id" && crumbs[1]) {
+				//if (crumbs[0] == "user_id" && crumbs[1]) {
 				user_id = crumbs[1];
-				console.log("crumbs[1] :", crumbs[1]);
-				};
+				//console.log("crumbs[1] :", crumbs[1]);
+				//};
 			});
 			console.log("user_id :", user_id);
 			main.start(user_id, request, response, function(result){
@@ -140,7 +141,6 @@ app.get('/gameon', function(request, response, callback){
 		}
 		else {
 			console.log("Error: Session not stored in cookies");
-			return callback();
 		}			
 	}
 });
