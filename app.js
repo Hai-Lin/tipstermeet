@@ -126,18 +126,21 @@ app.get('/gameon', function(request, response, callback){
 			;
 		// Geting user_id from cookie	
 		if (request.headers && request.headers.cookie) {
-			request.headers.cookie.split(";").forEach(function(cookie) {
+			var cookie_new = request.headers.cookie.replace(/\s+/g, '');
+			cookie_new.split(";").forEach(function(cookie) {
 				var crumbs = cookie.split("=");
-				if (crumbs[0] == " id" && crumbs[1]) {
+				if (crumbs[0] == "id" && crumbs[1]) {
 					console.log("crumbs[0] :", crumbs[0]);
 					console.log("crumbs[1] :", crumbs[1]);
-					user_id = crumbs[1];
+					user_id = crumbs[1];					
 				}
+
 			});
 			console.log("user_id :", user_id);
 			main.start(user_id, function(result){
 				response.render('index',{ title: 'tipster-finder', tips: result });
 			});
+			
 		}
 		else {
 			console.log("Error: Session not stored in cookies");
