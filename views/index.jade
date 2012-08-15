@@ -3,6 +3,7 @@ doctype 5
 - var user = tips[0];
 script 
 	var current_page = 0;
+	var distance_count = 0;
 	var product_index = [];
 	var length = #{product.length};
 	var maxPage = Math.floor((length-1)/10);
@@ -13,9 +14,12 @@ script
 	var current_user_ids = [];
 	var current_user_indexs = [];
 	var notStart = true;
+	var selected_count = 0;
+	var selected_array = [];
 script(src='//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')        
 script(src='//d3t3tfuk4dded6.cloudfront.net/web/developer/bootstrap/js/bootstrap.min.js')
 style
+	.gone {opacity:0;}
 	.centered-text {text-align:center}
 	.product-div {margin-top:15px;position:relative; overflow:hidden; height:150px;  }
 	.product-div img, .product-div div {position:absolute;}
@@ -24,7 +28,7 @@ style
 	.product-name p {color:white; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;}
 	.product-sway {opacity:0.8;background:black; color:#333333;width:15%; height:10%; }
 	.product-sway h4 {color:white}
-	.product-select {opacity:0.5;background:black; color:#333333;width:100%; height:100%; padding-top: 40%; }
+	.product-select {opacity:0.5;background:black; color:#333333;width:100%; height:100%; padding-top: 30%; }
 	.product-select h1 {color:white}
 	.selected { }
 	.selected div[class='product-select'], .selected  div[class='user-name'], .selected  div[class='user-follow'] {display:block;}
@@ -33,7 +37,7 @@ style
 	.hover div[class='product-name'], .hover div[class='product-sway'], .hover div[class='user-name'], .hover div[class='user-follow'] {display:block;}
 	.hover div[class='product-cover'], .hover div[class='product-select'],.hover div[class='user-cover'] {display:none;}
 	.off{}
-	.off div[class='product-name'], .off div[class='product-sway'], .off div[class='user-name'], .off div[class='product-select'],.off div[class='user-follow'] {display:none;}
+	.off div[class='product-name'], .off div[class='product-sway'], .off div[class='user-name'], .off div[class='product-select']{display:none;}
 	.off div[class='product-cover'], .off div[class='product-cover']{display:block;}
 	.user-div {margin-top:30px; position:relative; overflow:hidden; height:150px;  }
 	.user-div img, .user-div div {position:absolute;}
@@ -50,10 +54,13 @@ style
 	.margin-right {margin-right:100px}
 	.arrow-left {font-size:50px;margin-top:150px;float:left; margin-left:11px;}
 	.arrow-right {font-size:50px;margin-top:150px;float:right; margin-right:15px}
-	.header {margin:70px 0 0 82px; background-color:#ebeced; height:53px; padding:20px 0 0 20px; width:955px;}
+	.header {margin:70px 0 0 90px; background-color:#ebeced; height:53px; padding:20px 0 0 20px; width:955px;}
 	.learn-more { float:right; margin:5px 86px 0 0;}
-	.reset { margin:40px 0 0 993px}
+	//.reset { margin:40px 0 0 993px}
 	.alert-div {margin:10px 100px 0 100px; height:20px}
+	.small-div { background-color:#ebeced; height:72px; width:935px; margin:20px 0 0 90px; padding:20px;}
+	.small-image-div { position:relative; overflow:hidden; height:50px; }
+	.reset {float:right; margin-top:20px;}
 html
 	head
 		title= title
@@ -100,9 +107,9 @@ html
 						img(src='images/reset.png')
 					div(class='modal-footer')
 						a(href='#', class='btn btn-primary', data-dismiss='modal') Close
-				a(class='btn btn-primary learn-more', data-toggle='modal', href='#learn_more') How to use
+				a(class='btn btn-primary learn-more', data-toggle='modal', href='#learn_more',i rel='popover', data-content = 'Click tips to see who tipped this tip and you are not following, select multiple tips to see the intersetion of users tips all the tips. Click this button if you really want to how it works.', data-original-title='How to use', id = 'how_to_use' ) How to use
 				h1 Select from your tips to find new people to follow
-			button(id='reset',onclick='cleanAll()', class='btn btn-large reset', title='Clear all current selected tips',rel='popvoer', data-content='Clear all current selected tips' ) Reset
+			//-button(id='reset',onclick='cleanAll()', class='btn btn-large reset', title='Clear all current selected tips',rel='popvoer', data-content='Clear all current selected tips' ) Reset
 			div(id='alert-area')
 			div(class='container')	
 				a(class="arrow-left ", onclick='goLeft()',href='javascript:void(0);' )
@@ -112,15 +119,19 @@ html
 				div(class='row-fluid')
 					div(id='product_length', class='span1')
 					-for(var i =0; i<product.length; i++)
-						div(id='product_#{i}',class='container centered-text product-div span2 off'  )
+						div(id='product_#{i}',class='container centered-text product-div span2 off', rel = 'tooltip', title='Opp, no one you can follow by selecting this tip!'  )
 							img(src=product[i].thumbnail, width='100%')
 							div(class='product-cover')
 							div(class='product-select')
-								h1 &#10003;
+								h1 Selected
 							div(class='product-name')
 								p #{product[i].name} 
 							div(class='product-sway')
 								h4 #{product[i].sway} 
+			div(class='small-div') 
+				button(id = 'reset', class='btn reset btn-large', onclick='cleanAll();', rel="tooltip", title="Reset your selection") Reset
+				h4 Selected tips, click to unselect
+				div(class='row-fluid', id='small-div')
 			div(class='container span11', style=' margin-top: 30px;border-bottom:2px solid #ebeced;')
 			div(class='container span12', style='margin-bottom:30px')	
 				div(class='row-fluid span12 ')
@@ -135,15 +146,48 @@ html
 								div(class='user-name')
 									h4 #{tippers[j].name} 
 								div(class='user-follow')
-									a( class='btn btn-success', onclick='$.ajax({url:"/follow/#{tippers[j].head}", success: function(){$("#user_#{i}_#{j}").hide("slow"); }});') Follow
-						
-	
+									a( id='user_#{i}_#{j}_button',class='btn', data-loading-text="following..", onclick=' $(this).button("loading");$.ajax({url:"/follow/#{tippers[j].head}", success: function(){$("#user_#{i}_#{j}").hide("slow"); }});') Follow
+
 script
+	function removeA(arr){
+		var what, a= arguments, L= a.length, ax;
+		while(L> 1 && arr.length){
+			what= a[--L];
+			while((ax= arr.indexOf(what))!= -1){
+				arr.splice(ax, 1);
+			}
+		}
+		return arr;
+	}
+
 	function newAlert (message) {
 	$("#alert-area").append($("<div class='alert fade in alert-div'><p> " + message + " </p></div>"));
 	$(".alert-div").delay(1000).fadeOut("slow", function () { $(this).remove(); });
 	}
+	
+	function addToSmallDiv(index)
+	{
+	var img_url = $('#product_'+index).children()[0].src;
+	$('#small-div').append("<a onclick = removeFromSmallDiv("+ index +")><div id = 'selected"+selected_count+"' class='centered-text small-image-div span1' style='float:right; margin-right:30px;'> <img src='"+ img_url + "' width = '100%'></div></a>");
+	var distance = 755 - 80 * (distance_count+1) ;
+	$('#selected'+selected_count).animate({'left': '-='+distance+'px'}, 'slow', function(){ var $e = $('#selected'+selected_count); $e.css('float','left'); $e.css('left', '0'); $e.css('margin-right', '0px'); selected_count++; distance_count++ });
+	selected_array.push(index);
+	}
+
+	function removeFromSmallDiv(index)
+	{
+	product_index[index] =0;
+	$('#product_'+index).attr('class','container centered-text product-div span2 off');
+	var selected_index = selected_array.indexOf(index.toString());
+	$('#selected'+selected_index).hide('slow', function() { $('#selected'+selected_index).remove(); });
+	selected_array[selected_index] = -1;
+	removeUser();
+	//removeA(selected_array, index.toString());
+	distance_count--;
+	}
+
 	function goRight(){
+	$('.arrow-left').attr('class', 'arrow-left');
 	if(current_page != maxPage)
 	{
 		current_page++;
@@ -158,12 +202,18 @@ script
 		{
 			$('#product_'+i).show();
 		}
+		if(current_page == maxPage)
+			$('.arrow-right').attr('class', 'arrow-right gone');
+		else
+			$('.arrow-right').attr('class', 'arrow-right');
 		}
 	else{
 		newAlert("That's all we have");
 		}
 	}
+
 	function goLeft(){
+	$('.arrow-right').attr('class', 'arrow-right');
 		if(current_page != 0)
 		{	
 			cleanAll();
@@ -176,15 +226,16 @@ script
 			{
 				$('#product_'+i).show();
 			}
+			if(current_page == 0)
+				$('.arrow-left').attr('class', 'arrow-left gone');
+			else
+				$('.arrow-left').attr('class', 'arrow-left');
 		}
 		else
 		{
 		newAlert("That's all we have");
 		}
-
 	}
-				
-
 
 	function cleanAll(){
 		current_user_ids = [];
@@ -193,11 +244,20 @@ script
 		for (var i =0; i<length; i++)
 		{
 			var $product = $('#product_'+i);
+			if(product_index[i] == 1)
+			{
+				var selected_index = selected_array.indexOf(i.toString());
+				$('#selected'+selected_index).remove();
+			}
 			product_index[i] = 0;
 			$product.attr('class','container centered-text product-div span2 off');
 		}
+		selected_array = [];
+		selected_count = 0;
+		distance_count = 0;
 		showUser();
 	}
+
 	function joinArray(arr1, arr2){
 		var result = []
 		var index = []
@@ -224,7 +284,36 @@ script
 		}
 				return [result,index];
 	}
-	function updateUser(index){
+
+	function removeUser(){
+	var result, index, isAny = false;
+	current_user_ids = [];
+	current_user_indexs = [];
+	notStart = true;
+	for( var i = 0; i < product_index.length; i++)
+	{
+		if(product_index[i] == 1)
+		{
+			isAny = true;
+			result = joinArray(current_user_ids, user_id[i]);
+			notStart = false;
+			index = i;
+			current_user_ids = result[0];
+		}
+	}
+	if(isAny == false)
+	{
+		cleanAll();
+		return false;
+		}
+	var current_index = [];
+	for(var i = 0; i< result[1].length; ++i)
+		{current_index.push([index,result[1][i]]); }
+		current_user_indexs = current_index;
+	showUser();
+	}
+
+	function addUser(index){
 	var result = joinArray(current_user_ids, user_id[index]);
 	var current_index = [];
 	current_user_ids = result[0];
@@ -233,6 +322,8 @@ script
 		current_user_indexs = current_index;
 	showUser();
 	}
+
+
 	function showUser(){
 	for(var i =0; i<length; i++)
 		for(var j =0; j<user_length[i]; j++)
@@ -242,12 +333,21 @@ script
 	}
 
 	function init(){
+	$('#reset').tooltip();
+	$('.arrow-left').attr('class', 'arrow-left gone');
+	$('#how_to_use').popover();
 	//$('#reset').popover({placement:'top',title:'Reset'});
 	for(var i =0; i<length; i++)
 		product_index.push(0);
 	for(var i = 0; i<length; i++)
 	{
 		var $product = $('#product_'+i);
+	$product.tooltip();
+	if(user_length[i] > 0)
+	{
+		var title = 'You can follow '+user_length[i]+' new people by selecting this tip';
+		$product.attr('data-original-title',title);
+	}
 	$product.mouseover(function(){
 			var ii = $(this).attr('id').split('_')[1];
 		if(product_index[ii] ==0){$(this).attr('class','container centered-text product-div span2 hover');}});
@@ -257,9 +357,18 @@ script
 	
 	$product.click(function(){
 			var ii = $(this).attr('id').split('_')[1];
+			if(product_index[ii] == 0)
+			{
 		product_index[ii] =1;
 		$(this).attr('class','container centered-text product-div span2 selected');
-			updateUser(ii);
+			addUser(ii);
+			addToSmallDiv(ii);
+		}
+		else
+		{
+			removeFromSmallDiv(ii);
+
+		}
 		});
 		for( var j=0; j<user_length[i]; j++)
 			{
