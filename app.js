@@ -32,8 +32,8 @@ app.configure('development', function(){
 // tos_oauth 
 var tos_request_token_url = "https://tips.by/oauth/request_token?oauth_callback=" + encodeURIComponent("http://tipstermeet.com/try_authorize"),
 	tos_access_token_url = "https://tips.by/oauth/access_token",
-	tos_api_key = '8ba43918d5b04a71aef489de9e2a88b0',
-	tos_api_secret = '72400e24cca646e6bb56432e16a4ce62',
+	tos_api_key = 'Your api key here',
+	tos_api_secret = 'Your api secret here',
 	tos_oauth = new OAuth(tos_request_token_url, tos_access_token_url, tos_api_key, tos_api_secret, "1.0", null, "HMAC-SHA1")
 			;
 var session = { "me": {"rt": "", "rts": "", "at": "", "ats": "", "tos_user_id": "", "tos_user_name": ""} };    
