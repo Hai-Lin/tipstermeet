@@ -2,8 +2,8 @@ var events = require("events");
 var TipsClient = require('../');
 var product = require('../lib/product');
 var tips = new TipsClient({
-  	key:'8ba43918d5b04a71aef489de9e2a88b0',
-  	secret:'72400e24cca646e6bb56432e16a4ce62',
+  	key:'Your key',
+  	secret:'Your secret',
   	debug: true
 });
 
