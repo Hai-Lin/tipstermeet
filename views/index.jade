@@ -166,7 +166,7 @@ script
 
 	function newAlert (message) {
 	$("#alert-area").append($("<div class='alert fade in alert-div'><p> " + message + " </p></div>"));
-	$(".alert-div").delay(100000).fadeOut("slow", function () { $(this).remove(); });
+	$(".alert-div").delay(2000).fadeOut("slow", function () { $(this).remove(); });
 	}
 	
 	function addToSmallDiv(index)
