@@ -1,0 +1,38 @@
+doctype 5
+script(src='//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js')        
+script(src='//d3t3tfuk4dded6.cloudfront.net/web/developer/bootstrap/js/bootstrap.min.js')
+style
+	.main-div{background-color:white; min-height:1000px;}
+	.h1 {font-size:50px;margin-top:80px; margin-bottom: 20px;text-align:center;}
+	.p {margin:5px 20px 0 20px; font-size:18px; line-height: 30px;}
+html
+	head
+		link(rel='stylesheet', href='//d3t3tfuk4dded6.cloudfront.net/web/developer/bootstrap/css/bootstrap.min.css')
+		link(rel='stylesheet', href='//d3t3tfuk4dded6.cloudfront.net/web/developer/bootstrap/css/bootstrap-responsive.min.css')
+	body(style='background-color:#dddedf')
+		div(class='navbar navbar-fixed-top')
+			div(class='navbar-inner')
+				div(class='container')
+					a(href = '/')
+						img(src='/images/tipster-meet-logo.png')
+					ul(class='nav pull-right')
+						li
+							a(href = '/about') About 
+		div(class='container main-div')
+			h1(class='h1') How Tipsters Meet Each Other
+			div(class='row')
+				div(class='span10 offset1')
+					p(class='p') 
+						| &nbsp; &nbsp;Tipstermeet is a webapp that provides an easy way for you to find people with similar taste to follow on 
+						| <a href= 'http://tips.by' style='color:#7bb9c8'> Tip or Skip. </a> 
+						| You can select from your tips to see who also tip them. And by selecting multiple tips, you can easily find who have the similar taste with you. 
+					p(class='p')
+						| &nbsp; &nbsp; Tipstermeet is powered by 
+						| <a href='http://tips.by/developers' style='color:#7bb9c8'> Tip or Skip API </a>
+						|, node.js and express. We host this app on heroku. You can check the source code on 
+						| <a href = 'https://github.com/Hai-Lin/Tipper-meet' style='color:#7bb9c8'> github </a>
+						|. It is a small project built by 
+						|<a href='mailto:aps398@nyu.edu'>Ashwath</a>
+						|and 
+						|<a href='http://hai-lin.com'>Hai</a>
+						|in summer, 2012.

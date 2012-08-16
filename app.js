@@ -63,6 +63,13 @@ app.get(/^\/try_authorize/, function(request, response, callback){
 	});
 });
 
+//about page
+app.get('/about', function(request,response, callback)
+{
+response.render('about');
+}); 
+
+
 //get access token then redirects to /gameon
 app.get('/', function(request, response, callback){
 	tos_oauth.getOAuthRequestToken(function(error, request_token, request_secret) {
